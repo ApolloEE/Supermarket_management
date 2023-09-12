@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apollo.mybatis.mapper.UserMapper">
+    <resultMap id="userMap" type="com.apollo.mybatis.pojo.User">
+        <!--数据库的名字必须和实体类一致，使用<resultmap>,column是数据库的名字，property是实体类的名字-->
+        <result column="roleName" property="userRoleName"></result>
+    </resultMap>
+    <insert id="add">
+            INSERT INTO `smbms_user` (`userCode`,`userName`,`userPassword`,`gender`,birthday,phone,address,userRole,creationDate)
+            VALUES (#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},#{address},#{userRole},NOW())
+        </insert>
+    <update id="updateById">
+        UPDATE `smbms_user` SET `userPassword`=#{userPassword} WHERE id=#{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM `smbms_user` WHERE `id`=#{id}
+    </delete>
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*) FROM smbms_user
+    </select>
+    <select id="selectAll" resultType="com.apollo.mybatis.pojo.User">
+        SELECT * FROM smbms_user
+    </select>
+    <select id="selectById" resultType="com.apollo.mybatis.pojo.User">
+        SELECT * FROM smbms_user WHERE id = #{id}
+    </select>
+    <select id="selectByBrithdayAndGender" resultType="com.apollo.mybatis.pojo.User">
+        SELECT * FROM smbms_user WHERE birthday >= #{birthday} and gender = #{gender}
+    </select>
+    <select id="selectPhone" resultType="com.apollo.mybatis.pojo.User">
+        SELECT * FROM smbms_user where phone = #{phone}
+    </select>
+    <select id="selectByName" resultType="com.apollo.mybatis.pojo.User">
+--         concat连接函数，可以连接字符和变量
+        SELECT * FROM smbms_user WHERE userName like concat("%",#{name},"%")
+    </select>
+    <select id="selectAllAndRoleName" resultMap="userMap">
+--         必须要把roleName改成userRoleName，数据库的名字必须和实体类一致
+        SELECT smbms_user.*,roleName
+        FROM smbms_user,smbms_role
+        WHERE smbms_user.userRole = smbms_role.id
+    </select>
+
+</mapper>

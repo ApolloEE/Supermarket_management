@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apollo.mybatis.mapper.RoleMapper">
+    <insert id="add">
+            INSERT INTO `smbms_role` (`roleCode`,`roleName`,`createdBy`,`creationDate`)
+            VALUES (#{roleCode},#{roleName},#{createdBy},NOW())
+        </insert>
+    <update id="updateById">
+            UPDATE `smbms_role` SET `roleCode`=#{roleCode},`roleName`=#{roleName},`modifyBy`=#{modifyBy},`modifyDate`=NOW() WHERE id=#{id}
+    </update>
+    <delete id="deleteById">
+            DELETE FROM `smbms_role` WHERE `id`=#{id}
+    </delete>
+</mapper>
